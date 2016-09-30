@@ -1,0 +1,17 @@
+{
+	"projectTitle" : "My Website Title",
+	"links" : [
+	    {"name" : "Home", "url" : "#/", "className" : ""},
+	    {"name" : "About", "url" : "/about", "className" : ""},
+	    {"name" : "Contact", "url" : "/contact", "className" : ""},
+	    {"name" : "Categories", "url" : "/categories", "className" : "dropdown", "sub" :
+	        [
+	            {"name" : "Tech Stuff", "url" : "/techStuff"},
+	            {"name" : "AngularJS", "url" : "/angularJS"},
+	            {"name" : "HTML5", "url" : "/html5"},
+	            {"name" : "Javascript", "url" : "/javascript"},
+	            {"name" : "jQuery", "url" : "/jquery"}
+	        ]
+	    }
+	]
+}
