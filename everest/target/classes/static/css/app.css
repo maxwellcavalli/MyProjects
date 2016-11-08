@@ -1,0 +1,179 @@
+body, #mainWrapper {
+	height: 90%;
+	background-color: rgb(245, 245, 245);
+}
+
+body, .form-control {
+	font-size: 12px !important;
+}
+
+.floatRight {
+	float: right;
+	margin-right: 18px;
+}
+
+.has-error {
+	color: red;
+}
+
+.formcontainer {
+	background-color: #DAE8E8;
+	padding: 10px;
+}
+
+.tablecontainer {
+	padding-left: 10px;
+}
+
+.generic-container {
+	width: calc(100% - 20px);
+	margin-left: 10px;
+	margin-top: 10px;
+	margin-bottom: 20px;
+	padding: 5px;
+	background-color: #EAE7E7;
+	border: 1px solid #ddd;
+	border-radius: 4px;
+	box-shadow: 0 0 30px black;
+}
+
+.custom-width {
+	width: 80px !important;
+}
+
+/* validations */
+/* input.ng-valid {
+	background-color: lightgreen;
+} */
+
+input.ng-dirty.ng-invalid-required {
+	background-color: lightpink;
+}
+
+input.ng-dirty.ng-invalid-minlength {
+	background-color: lightyellow;
+}
+
+input.ng-dirty.ng-invalid-email {
+	background-color: lightpink;
+}
+
+/* custom bootstrap */
+.table {
+	margin-bottom: 0px !important;
+}
+
+td, th {
+	font-size: 12px !important;
+}
+
+.pagination {
+	margin: 10px 0 !important;
+}
+
+.page-position {
+	text-align: right;
+	margin-right: 10px;
+}
+
+/* data table */
+@media only screen and (max-width: 800px) {
+	/* Force table to not be like tables anymore */
+	#no-more-tables table, #no-more-tables thead, #no-more-tables tbody,
+		#no-more-tables th, #no-more-tables td, #no-more-tables tr {
+		display: block;
+	}
+
+	/* Hide table headers (but not display: none;, for accessibility) */
+	#no-more-tables thead tr {
+		position: absolute;
+		top: -9999px;
+		left: -9999px;
+	}
+	#no-more-tables tr {
+		border: 1px solid #ccc;
+	}
+	#no-more-tables td {
+		/* Behave like a "row" */
+		border: none;
+		border-bottom: 1px solid #eee;
+		position: relative;
+		padding-left: 50%;
+		white-space: normal;
+		text-align: left;
+	}
+	#no-more-tables td:before {
+		/* Now like a table header */
+		position: absolute;
+		/* Top/left values mimic padding */
+		top: 6px;
+		left: 6px;
+		width: 45%;
+		padding-right: 10px;
+		white-space: nowrap;
+		text-align: left;
+		font-weight: bold;
+	}
+
+	/* Label the data */
+	#no-more-tables td:before {
+		content: attr(data-title);
+	}
+	#no-more-tables td span {
+		display: block;
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis
+	}
+}
+
+
+
+.loader {
+    border: 16px solid #f3f3f3; /* Light grey */
+    border-top: 16px solid #3498db; /* Blue */
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.loader-container{
+	position: fixed;
+    z-index: 999;
+    background-color: rgba(0, 0, 0, 0.06);
+    width: 100%;
+    height: 100%;
+    top: 0;
+}
+
+.inner-loader-container {
+    width: 124px;
+    margin: auto;
+    top: 45%;
+    position: absolute;
+    left: 45%;
+}
+    
+.loadind-flex-container {
+	display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(158, 153, 236, 0.23);
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    top: 0;
+    z-index: 999;
+    margin: 0;
+}
+
+
+
+
+
