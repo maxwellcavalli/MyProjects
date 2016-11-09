@@ -3,7 +3,7 @@
 angular.module('myApp').factory('StateService', ['$http', '$q', '$log', 'HOST', function($http, $q, $log, HOST){
  
     var REST_SERVICE_URI 	= HOST + '/state/';
-    var REST_REPOSITORY_URI = HOST + '/stateRepository/search/findByNameLikeIgnoreCase?name='
+    var REST_REPOSITORY_URI = HOST + '/api/states/search/findByNameLikeIgnoreCase?name='
  
     var factory = {
         fetchAll			: fetchAll,
@@ -23,7 +23,20 @@ angular.module('myApp').factory('StateService', ['$http', '$q', '$log', 'HOST', 
         var deferred = $q.defer();
         fetchAllService(pageNumber, pageSize, filter).then(
             function (response) {
-                deferred.resolve(response.data);
+            	var records = response.data._embedded.states;
+            	var retorno = {data:[], page:null }
+            	
+				var x = 0;
+				for (x in records){
+					var s = records[x].content;
+					var obj = JSON.parse(s);
+					
+					retorno.data.push(obj);
+				}
+            	
+				retorno.page = response.data.page;
+				
+                deferred.resolve(retorno);
             },
             function(errResponse){
                 deferred.reject(errResponse);

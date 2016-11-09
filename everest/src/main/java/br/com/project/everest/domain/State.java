@@ -8,35 +8,38 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 @Entity
-@Table(name="states")
-public class State implements Serializable {
+@Table(name = "states")
+public class State extends BaseDomain implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "state_id")
+	@JsonProperty("states_code")
 	private Long id;
 
 	@NotNull
 	@Column(name = "abreviation", length = 3, unique = true, nullable = false)
+	@JsonProperty("states_abreviation")
 	private String abreviation;
 
 	@NotNull
 	@Column(name = "name", length = 100, unique = false, nullable = true)
+	@JsonProperty("states_name")
 	private String name;
 
 	public State() {
 		id = 0l;
 	}
 	
-	@Transient
-	public Long getCode(){
-		return this.id;
+	public void setCode(Long code){
+		this.id = code;
 	}
 
 	public Long getId() {

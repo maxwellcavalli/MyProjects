@@ -8,7 +8,7 @@ import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 
 import br.com.project.everest.domain.State;
 
-@RepositoryRestResource(collectionResourceRel = "stateRepository", path = "stateRepository")
+@RepositoryRestResource
 public interface StateRepository extends PagingAndSortingRepository<State, Long>{
 	
 	State findById(@Param("id") Long id);

@@ -12,33 +12,36 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.persistence.Transient;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 @Entity
 @Table(name = "cities")
-public class City implements Serializable {
+public class City extends BaseDomain implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "city_id")
+	@JsonProperty("cities_code")
 	private Long id;
 
+	@JsonProperty("cities_name")
 	@Column(name = "name", length = 100, unique = false, nullable = true)
 	private String name;
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "state_id", referencedColumnName = "state_id", foreignKey = @ForeignKey(name = "Fk_city_state"))
+	@JsonProperty("cities_state")
 	private State state;
 
 	public City() {
 		id = 0l;
 	}
-
-	@Transient
-	public Long getCode() {
-		return this.id;
+	
+	public void setCitiesCode(Long citiesCode){
+		this.id = citiesCode;
 	}
 
 	public Long getId() {

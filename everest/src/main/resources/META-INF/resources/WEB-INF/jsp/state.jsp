@@ -19,18 +19,17 @@
 			<h:messages controller="ctrl"/>
 		
 			<form ng-submit="ctrl.submit()" name="formulario" class="form-horizontal" form-focus="true">
-		         <input type="hidden" ng-model="ctrl.domain.code" />
 			
 				 <div class="row">
-					<h:input model="ctrl.domain.abreviation" label="Code" name="abreviation" form="formulario" maxlength="2" required="true" styleClass="col-md-2" 
-						ngDisable="!!ctrl.domain.code" />
-					<h:input model="ctrl.domain.name" label="Name" name="name" form="formulario" maxlength="50" required="true" styleClass="col-md-10"/>
+					<h:input model="ctrl.domain.states_abreviation" label="Code" name="abreviation" form="formulario" maxlength="2" required="true" styleClass="col-md-2" 
+						ngDisable="!!ctrl.domain.states_code" />
+					<h:input model="ctrl.domain.states_name" label="Name" name="name" form="formulario" maxlength="50" required="true" styleClass="col-md-10"/>
 				</div>
 				
 				<div class="row">
 					<div class="form-actions floatRight">
-	         			<input type="submit"  value="{{!ctrl.domain.code ? 'Add' : 'Update'}}" class="btn btn-primary btn-sm" ng-disabled="formulario.$invalid">
-						<button type="button" ng-click="ctrl.reset()" class="btn btn-danger btn-sm" ng-show="ctrl.domain.code">Cancel</button>
+	         			<input type="submit"  value="{{!ctrl.domain.states_code ? 'Add' : 'Update'}}" class="btn btn-primary btn-sm" ng-disabled="formulario.$invalid">
+						<button type="button" ng-click="ctrl.reset()" class="btn btn-danger btn-sm" ng-show="ctrl.domain.states_code">Cancel</button>
 						<button type="button" ng-click="ctrl.reset()" class="btn btn-warning btn-sm" ng-disabled="formulario.$pristine">Reset Form</button>
 					</div>
 	 			</div>
@@ -63,12 +62,12 @@
 							</tr>
 						
 							<tr ng-repeat="d in ctrl.datatable.data">
-								<td data-title="ID"><span ng-bind="d.code"></span></td>
-								<td data-title="Code"><span ng-bind="d.abreviation"></span></td>
-								<td data-title="Name"><span ng-bind="d.name"></span></td>
+								<td data-title="ID"><span ng-bind="d.states_code"></span></td>
+								<td data-title="Code"><span ng-bind="d.states_abreviation"></span></td>
+								<td data-title="Name"><span ng-bind="d.states_name"></span></td>
 								<td data-title="Actions" align="center">
-									<button type="button" ng-click="ctrl.edit(d.code)" class="btn btn-success custom-width">Edit</button>  
-	                             	<button type="button" ng-click="showConfirm($event, d.code)" class="btn btn-danger custom-width">Remove</button>
+									<button type="button" ng-click="ctrl.edit(d.states_code)" class="btn btn-success custom-width">Edit</button>  
+	                             	<button type="button" ng-click="showConfirm($event, d.states_code)" class="btn btn-danger custom-width">Remove</button>
 								</td>
 							</tr>
 						</tbody>

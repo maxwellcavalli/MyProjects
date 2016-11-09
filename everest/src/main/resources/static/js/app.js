@@ -7,8 +7,6 @@ angular.module('myApp').directive('formFocus', function($timeout, $log) {
 		},
 		link : function(scope, element) {
 			scope.$watch('focus', function(value) {
-				 $log.info('formFocus');
-				
 				if (value === "true") {
 					$timeout(function() {
 						focusOnFirstField(element);
@@ -18,10 +16,6 @@ angular.module('myApp').directive('formFocus', function($timeout, $log) {
 		}
 	};
 });
-
-
-
-
 
 
 (function(angular) {
@@ -36,14 +30,10 @@ angular.module('myApp').directive('formFocus', function($timeout, $log) {
 				scope.$watch(scope.isLoading, toggleElement);
 
 				function toggleElement(loading) {
-					console.log(loading);
-					
 					if (loading) {
 						elem.show();
-						console.log('show');
 					} else {
 						elem.hide();
-						console.log('hide');
 					}
 				}
 
@@ -140,12 +130,11 @@ function Datatable(){
 	}
 }
 
-function DatatableHeader(pTitle, pWidth, pAlign, pName){
+function DatatableHeader(pTitle, pWidth, pAlign){
 	return header = {
 			title: pTitle,
 			width: pWidth,
-			align: pAlign,
-			name: pName
+			align: pAlign
 	}
 }
 
