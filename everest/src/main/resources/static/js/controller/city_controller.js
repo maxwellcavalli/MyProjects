@@ -1,7 +1,7 @@
 'use strict';
  
-angular.module('myApp').controller('CityController', ['$scope', '$log', '$rootScope', 'CityService', 'StateService', 'ConfirmationDialog', 
-	function($scope, $log, $rootScope, CityService, StateService, ConfirmationDialog) {
+angular.module('myApp').controller('CityController', ['$scope', '$log', '$rootScope', 'CrudService', 'ConfirmationDialog', 'HOST',
+	function($scope, $log, $rootScope, CrudService, ConfirmationDialog, HOST) {
 	
     var self 		= this;
     self.domain		= createDomain();
@@ -17,11 +17,19 @@ angular.module('myApp').controller('CityController', ['$scope', '$log', '$rootSc
     
     self.states 	= [];
     var stateFilter = encodeURI('%%');
-    StateService.fetchAll(0, 9999, stateFilter).then(
+    var REST_REPOSITORY_URI_STATE = HOST + '/api/stateRepo/search/findByNameLikeIgnoreCase?name='
+    
+    CrudService.fetchAllByUrl(REST_REPOSITORY_URI_STATE, 0, 9999, stateFilter).then(
     	function (d){
     		self.states = d.data;
     	}	
     );
+    
+    var REST_SERVICE_URI 	= HOST + '/city/';
+    var REST_REPOSITORY_URI = HOST + '/api/cityRepo/search/findByNameLikeIgnoreCase?name='
+    
+    CrudService.init(REST_SERVICE_URI, REST_REPOSITORY_URI);
+    
     
     //public methods
     self.submit 	= submit;
@@ -47,7 +55,7 @@ angular.module('myApp').controller('CityController', ['$scope', '$log', '$rootSc
     			cities_id:null, 
     			cities_name:'', 
     			cities_state:{
-    				states_code:null,
+    				states_id:null,
     				states_name:''
     			}
     	}
@@ -60,7 +68,7 @@ angular.module('myApp').controller('CityController', ['$scope', '$log', '$rootSc
     	var filter = encodeURI('%'+self.datatable.filter+'%');
     	
     	if (pageNumber == 0 || (pageNumber >= 0 && pageNumber < self.datatable.pages.totalPages)){
-    		CityService.fetchAll(pageNumber, pageSize, filter).then(
+    		CrudService.fetchAll(pageNumber, pageSize, filter).then(
 				function(d) {
 					self.datatable.data 			= d.data;
 					self.datatable.pages 			= d.page;
@@ -91,7 +99,7 @@ angular.module('myApp').controller('CityController', ['$scope', '$log', '$rootSc
     	$log.info('Creating...');
     	$log.info(domain);
     	
-        CityService.create(domain).then(
+        CrudService.create(domain).then(
         	function (response) {	
         		reset();
         		
@@ -110,7 +118,7 @@ angular.module('myApp').controller('CityController', ['$scope', '$log', '$rootSc
     function update(domain, code){
     	$log.info('Updating...');
     	
-        CityService.update(domain, code).then(
+        CrudService.update(domain, code).then(
         	function (response) {
         		reset();
         		
@@ -128,7 +136,7 @@ angular.module('myApp').controller('CityController', ['$scope', '$log', '$rootSc
  
     function removeDomain(code){
     	$log.info('Removing...');
-        CityService.remove(code).then(
+        CrudService.remove(code).then(
         	function (response) {
         		reset();
         		

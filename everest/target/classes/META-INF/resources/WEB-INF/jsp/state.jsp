@@ -8,7 +8,8 @@
 
 
 	<jsp:attribute name="scripts">
-		<script type="text/javascript" src="js/service/state_service.js"></script>
+		<script type="text/javascript" src="js/service/crud_service.js"></script>
+		<!-- <script type="text/javascript" src="js/service/state_service.js"></script> -->
 		<script type="text/javascript" src="js/controller/state_controller.js"></script>
 	</jsp:attribute>
 	<jsp:body>
