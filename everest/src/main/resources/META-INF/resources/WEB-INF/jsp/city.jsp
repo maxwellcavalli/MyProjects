@@ -28,14 +28,14 @@
 				
 				<div class="row">
 					<h:select model="ctrl.domain.cities_state" label="State" name="state" form="formulario" 
-						ngOptions="(option.states_abreviation + ' - '+ option.states_name) for option in ctrl.states track by option.states_code" styleClass="col-md-10"
+						ngOptions="(option.states_abreviation + ' - '+ option.states_name) for option in ctrl.states track by option.states_id" styleClass="col-md-10"
 						required="true"/>
 				</div> 
 				
 				<div class="row">
 					<div class="form-actions floatRight">
-	         			<input type="submit"  value="{{!ctrl.domain.cities_code ? 'Add' : 'Update'}}" class="btn btn-primary btn-sm" ng-disabled="formulario.$invalid">
-						<button type="button" ng-click="ctrl.reset()" class="btn btn-danger btn-sm" ng-show="ctrl.domain.states_code">Cancel</button>
+	         			<input type="submit"  value="{{!ctrl.domain.cities_id ? 'Add' : 'Update'}}" class="btn btn-primary btn-sm" ng-disabled="formulario.$invalid">
+						<button type="button" ng-click="ctrl.reset()" class="btn btn-danger btn-sm" ng-show="ctrl.domain.cities_id">Cancel</button>
 						<button type="button" ng-click="ctrl.reset()" class="btn btn-warning btn-sm" ng-disabled="formulario.$pristine">Reset Form</button>
 					</div>
 	 			</div>
@@ -51,7 +51,6 @@
     		
     		<jsp:body>
 				<div id="no-more-tables">
-				
 					<table class="col-sm-12 table-bordered table-striped table-condensed cf" style="padding-right: 0px; padding-left: 0px; ">
 						<thead class="cf">
 							<tr>
@@ -67,12 +66,12 @@
 							</tr>
 						
 							<tr ng-repeat="d in ctrl.datatable.data">
-								<td data-title="ID"><span ng-bind="d.cities_code"></span></td>
+								<td data-title="ID"><span ng-bind="d.cities_id"></span></td>
 								<td data-title="Name"><span ng-bind="d.cities_name"></span></td>
 								<td data-title="State"><span ng-bind="d.cities_state.states_name"></span></td>
 								<td data-title="Actions" align="center">
-									<button type="button" ng-click="ctrl.edit(d.cities_code)" class="btn btn-success custom-width">Edit</button>  
-	                             	<button type="button" ng-click="showConfirm($event, d.cities_code)" class="btn btn-danger custom-width">Remove</button>
+									<button type="button" ng-click="ctrl.edit(d.cities_id)" class="btn btn-success custom-width">Edit</button>  
+	                             	<button type="button" ng-click="showConfirm($event, d.cities_id)" class="btn btn-danger custom-width">Remove</button>
 								</td>
 							</tr>
 						</tbody>

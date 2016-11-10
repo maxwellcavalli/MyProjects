@@ -14,6 +14,10 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+import br.com.project.everest.domain.base.CrudDomain;
+
 @Entity
 @Table(name = "districts")
 public class District implements Serializable {
@@ -23,13 +27,16 @@ public class District implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "district_id")
+	@JsonProperty("districts_code")
 	private Long id;
 
 	@Column(name = "name", length = 100, unique = false, nullable = true)
+	@JsonProperty("districts_name")
 	private String name;
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "city_id", referencedColumnName = "city_id", foreignKey = @ForeignKey(name = "Fk_district_city"))
+	@JsonProperty("districts_city")
 	private City city;
 
 	public District() {

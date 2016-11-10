@@ -44,7 +44,7 @@ angular.module('myApp').controller('CityController', ['$scope', '$log', '$rootSc
     
     function createDomain(){
     	return {
-    			cities_code:null, 
+    			cities_id:null, 
     			cities_name:'', 
     			cities_state:{
     				states_code:null,
@@ -145,12 +145,12 @@ angular.module('myApp').controller('CityController', ['$scope', '$log', '$rootSc
     }
  
     function submit() {
-        if(self.domain.cities_code===null){
+        if(self.domain.cities_id===null){
             $log.info('Saving New Domain', self.domain);
             create(self.domain);
         }else{
-            update(self.domain, self.domain.cities_code);
-            $log.info('Domain updated with code ', self.domain.cities_code);
+            update(self.domain, self.domain.cities_id);
+            $log.info('Domain updated with code ', self.domain.cities_id);
         }
     }
  
@@ -158,7 +158,7 @@ angular.module('myApp').controller('CityController', ['$scope', '$log', '$rootSc
     	$log.info('code to be edited', code);
     	
         for(var i = 0; i < self.datatable.data.length; i++){
-            if(self.datatable.data[i].cities_code === code) {
+            if(self.datatable.data[i].cities_id === code) {
                 self.domain = angular.copy(self.datatable.data[i]);
                 break;
             }
@@ -170,7 +170,7 @@ angular.module('myApp').controller('CityController', ['$scope', '$log', '$rootSc
     function remove(code){
         $log.info('code to be deleted', code);
         
-        if(self.domain.cities_code === code) {
+        if(self.domain.cities_id === code) {
             reset();
         }
         

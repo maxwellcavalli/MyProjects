@@ -1,19 +1,20 @@
 'use strict';
  
-angular.module('myApp').controller('StateController', ['$scope', '$log', '$rootScope', 'StateService', 'ConfirmationDialog', 
-	function($scope, $log, $rootScope, StateService, ConfirmationDialog) {
+angular.module('myApp').controller('DistrictController', ['$scope', '$log', '$rootScope', 'DistrictService', 'ConfirmationDialog', 
+	function($scope, $log, $rootScope, DistrictService, ConfirmationDialog) {
 	
     var self 		= this;
     self.domain		= createDomain();
     self.datatable  = new Datatable();
     
     self.datatable.header.push(new DatatableHeader('ID', '10%', 'left'));
-	self.datatable.header.push(new DatatableHeader('Code', '10%', 'left'));
-	self.datatable.header.push(new DatatableHeader('Name', '60%', 'left'));
+	self.datatable.header.push(new DatatableHeader('Name', '25%', 'left'));
+	self.datatable.header.push(new DatatableHeader('City', '25%', 'left'));
+	self.datatable.header.push(new DatatableHeader('State', '20%', 'left'));
 	self.datatable.header.push(new DatatableHeader('Actions', '20%', 'center'));
     
     self.showError 	= false;
-    self.errorMessage = ''; 
+    self.errorMessage = '';
     
     //public methods
     self.submit 	= submit;
@@ -35,11 +36,14 @@ angular.module('myApp').controller('StateController', ['$scope', '$log', '$rootS
     fetchAll(0);
     
     function createDomain(){
-		return {
-			states_id : null,
-			states_abreviation : '',
-			states_name : ''
-		};
+    	return {
+    		districts_code:null, 
+    		districts_name:'', 
+    		districts_city:{
+    			cities_code:null,
+    			cities_name:''
+    		}
+    	}
     }
     
     function fetchAll(pageNumber){
@@ -49,7 +53,7 @@ angular.module('myApp').controller('StateController', ['$scope', '$log', '$rootS
     	var filter = encodeURI('%'+self.datatable.filter+'%');
     	
     	if (pageNumber == 0 || (pageNumber >= 0 && pageNumber < self.datatable.pages.totalPages)){
-    		StateService.fetchAll(pageNumber, pageSize, filter).then(
+    		DistrictService.fetchAll(pageNumber, pageSize, filter).then(
 				function(d) {
 					self.datatable.data 			= d.data;
 					self.datatable.pages 			= d.page;
@@ -73,13 +77,13 @@ angular.module('myApp').controller('StateController', ['$scope', '$log', '$rootS
 				}
     		);
     	}
-    	
     }
  
     function create(domain){
     	$log.info('Creating...');
+    	$log.info(domain);
     	
-        StateService.create(domain).then(
+        DistrictService.create(domain).then(
         	function (response) {	
         		reset();
         		
@@ -97,7 +101,8 @@ angular.module('myApp').controller('StateController', ['$scope', '$log', '$rootS
  
     function update(domain, code){
     	$log.info('Updating...');
-        StateService.update(domain, code).then(
+    	
+        DistrictService.update(domain, code).then(
         	function (response) {
         		reset();
         		
@@ -114,7 +119,8 @@ angular.module('myApp').controller('StateController', ['$scope', '$log', '$rootS
     }
  
     function removeDomain(code){
-        StateService.remove(code).then(
+    	$log.info('Removing...');
+        DistrictService.remove(code).then(
         	function (response) {
         		reset();
         		
@@ -131,12 +137,12 @@ angular.module('myApp').controller('StateController', ['$scope', '$log', '$rootS
     }
  
     function submit() {
-        if(self.domain.states_id===null){
+        if(self.domain.districts_code===null){
             $log.info('Saving New Domain', self.domain);
             create(self.domain);
         }else{
-            update(self.domain, self.domain.states_id);
-            $log.info('Domain updated with code ', self.domain.states_id);
+            update(self.domain, self.domain.districts_code);
+            $log.info('Domain updated with code ', self.domain.districts_code);
         }
     }
  
@@ -144,7 +150,7 @@ angular.module('myApp').controller('StateController', ['$scope', '$log', '$rootS
     	$log.info('code to be edited', code);
     	
         for(var i = 0; i < self.datatable.data.length; i++){
-            if(self.datatable.data[i].states_id === code) {
+            if(self.datatable.data[i].cities_code === code) {
                 self.domain = angular.copy(self.datatable.data[i]);
                 break;
             }
@@ -156,7 +162,7 @@ angular.module('myApp').controller('StateController', ['$scope', '$log', '$rootS
     function remove(code){
         $log.info('code to be deleted', code);
         
-        if(self.domain.states_id === code) {
+        if(self.domain.districts_code === code) {
             reset();
         }
         

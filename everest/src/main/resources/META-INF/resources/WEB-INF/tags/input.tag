@@ -29,13 +29,15 @@
 				<input type="text" ng-model="${model}" name="${name}" class="form-control input-sm" 
       	 			placeholder="${label}" required ng-minlength="${minlength}" ng-maxlength="${maxlength}" 
       	 			maxlength="${maxlength}"
-      	 			${disabled} ng-disabled="${ngDisable}"/>
+      	 			${disabled} ng-disabled="${ngDisable}"
+      	 			autocomplete="off"/>
 			</c:when>
 			<c:otherwise>
 				<input type="text" ng-model="${model}" name="${name}" class="form-control input-sm" 
       	 			placeholder="${label}" ng-minlength="${minlength}" ng-maxlength="${maxlength}"
       	 			maxlength="${maxlength}"
-      	 			${disabled} ng-disabled="${ngDisable}"/>
+      	 			${disabled} ng-disabled="${ngDisable}"
+      	 			autocomplete="off"/>
 			</c:otherwise>
 		</c:choose>	 
        	
