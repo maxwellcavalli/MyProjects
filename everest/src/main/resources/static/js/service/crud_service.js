@@ -1,29 +1,68 @@
 'use strict';
  
-angular.module('myApp').factory('CityService', ['$http', '$q', '$log', 'HOST', function($http, $q, $log, HOST){
+angular.module('myApp').factory('CrudService', ['$http', '$q', '$log', function($http, $q, $log){
  
-    var REST_SERVICE_URI 	= HOST + '/city/';
-    var REST_REPOSITORY_URI = HOST + '/api/cities/search/findByNameLikeIgnoreCase?name='
- 
+    var location = {
+    	controller_url : '',
+    	repository_url : ''
+    }
+    
     var factory = {
+    	init				: init,		
         fetchAll			: fetchAll,
         create				: create,
         update				: update,
         remove				: remove,
-        fetchAllService 	: fetchAllService
+        fetchAllByUrl		: fetchAllByUrl
     };
  
     return factory;
     
-    function fetchAllService(pageNumber, pageSize, filter){
+    function init (controller_url, repository_url){
+    	$log.info(location);
+    	
+    	location.controller_url = controller_url;
+    	location.repository_url = repository_url;
+    	
+    	$log.info(location);
+    }
+    
+    
+    /*function fetchAllService(pageNumber, pageSize, filter){
     	return $http.get(REST_REPOSITORY_URI + filter+'&size='+pageSize+'&page='+pageNumber);
+    }*/
+    
+    function fetchAllByUrl(url, pageNumber, pageSize, filter) {
+        var deferred = $q.defer();
+        $http.get(url + filter+'&size='+pageSize+'&page='+pageNumber).then(
+            function (response) {
+            	var records = response.data._embedded.d;
+            	var retorno = {data:[], page:null }
+            	
+				var x = 0;
+				for (x in records){
+					var s = records[x].content;
+					var obj = JSON.parse(s);
+					
+					retorno.data.push(obj);
+				}
+            	
+				retorno.page = response.data.page;
+				
+                deferred.resolve(retorno);
+            },
+            function(errResponse){
+                deferred.reject(errResponse);
+            }
+        );
+        return deferred.promise;
     }
  
     function fetchAll(pageNumber, pageSize, filter) {
         var deferred = $q.defer();
-        fetchAllService(pageNumber, pageSize, filter).then(
+        $http.get(location.repository_url + filter+'&size='+pageSize+'&page='+pageNumber).then(
             function (response) {
-            	var records = response.data._embedded.cities;
+            	var records = response.data._embedded.d;
             	var retorno = {data:[], page:null }
             	
 				var x = 0;
@@ -47,7 +86,7 @@ angular.module('myApp').factory('CityService', ['$http', '$q', '$log', 'HOST', f
  
     function create(domain) {
         var deferred = $q.defer();
-        $http.post(REST_SERVICE_URI, domain).then(
+        $http.post(location.controller_url, domain).then(
             function (response) {
                 deferred.resolve(response.data);
             },
@@ -60,7 +99,7 @@ angular.module('myApp').factory('CityService', ['$http', '$q', '$log', 'HOST', f
  
     function update(domain, id) {
         var deferred = $q.defer();
-        $http.put(REST_SERVICE_URI+id, domain).then(
+        $http.put(location.controller_url+id, domain).then(
             function (response) {
                 deferred.resolve(response.data);
             },
@@ -73,7 +112,7 @@ angular.module('myApp').factory('CityService', ['$http', '$q', '$log', 'HOST', f
  
     function remove(id) {
         var deferred = $q.defer();
-        $http.delete(REST_SERVICE_URI+id).then(
+        $http.delete(location.controller_url+id).then(
             function (response) {
                 deferred.resolve(response.data);
             },

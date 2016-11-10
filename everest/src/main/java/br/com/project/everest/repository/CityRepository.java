@@ -9,7 +9,7 @@ import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 import br.com.project.everest.domain.City;
 import br.com.project.everest.repository.base.CrudRepository;
 
-@RepositoryRestResource
+@RepositoryRestResource(path="cityRepo", collectionResourceRel="d")
 public interface CityRepository extends CrudRepository<City>{
 	
 	@Query(value = "select city "

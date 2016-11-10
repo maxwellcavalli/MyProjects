@@ -1,7 +1,7 @@
 'use strict';
  
-angular.module('myApp').controller('StateController', ['$scope', '$log', '$rootScope', 'StateService', 'ConfirmationDialog', 
-	function($scope, $log, $rootScope, StateService, ConfirmationDialog) {
+angular.module('myApp').controller('StateController', ['$scope', '$log', '$rootScope', 'CrudService', 'ConfirmationDialog', 'HOST', 
+	function($scope, $log, $rootScope, CrudService, ConfirmationDialog, HOST) {
 	
     var self 		= this;
     self.domain		= createDomain();
@@ -31,7 +31,12 @@ angular.module('myApp').controller('StateController', ['$scope', '$log', '$rootS
 			function fnNo(){}
 		);
 	}
- 
+    
+    var REST_SERVICE_URI 	= HOST + '/state/';
+    var REST_REPOSITORY_URI = HOST + '/api/stateRepo/search/findByNameLikeIgnoreCase?name='
+    
+    CrudService.init(REST_SERVICE_URI, REST_REPOSITORY_URI);
+    
     fetchAll(0);
     
     function createDomain(){
@@ -49,7 +54,7 @@ angular.module('myApp').controller('StateController', ['$scope', '$log', '$rootS
     	var filter = encodeURI('%'+self.datatable.filter+'%');
     	
     	if (pageNumber == 0 || (pageNumber >= 0 && pageNumber < self.datatable.pages.totalPages)){
-    		StateService.fetchAll(pageNumber, pageSize, filter).then(
+    		CrudService.fetchAll(pageNumber, pageSize, filter).then(
 				function(d) {
 					self.datatable.data 			= d.data;
 					self.datatable.pages 			= d.page;
@@ -79,7 +84,7 @@ angular.module('myApp').controller('StateController', ['$scope', '$log', '$rootS
     function create(domain){
     	$log.info('Creating...');
     	
-        StateService.create(domain).then(
+        CrudService.create(domain).then(
         	function (response) {	
         		reset();
         		
@@ -97,7 +102,7 @@ angular.module('myApp').controller('StateController', ['$scope', '$log', '$rootS
  
     function update(domain, code){
     	$log.info('Updating...');
-        StateService.update(domain, code).then(
+        CrudService.update(domain, code).then(
         	function (response) {
         		reset();
         		
@@ -114,7 +119,7 @@ angular.module('myApp').controller('StateController', ['$scope', '$log', '$rootS
     }
  
     function removeDomain(code){
-        StateService.remove(code).then(
+        CrudService.remove(code).then(
         	function (response) {
         		reset();
         		
