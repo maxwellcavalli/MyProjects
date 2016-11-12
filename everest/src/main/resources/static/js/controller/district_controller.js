@@ -1,7 +1,8 @@
 'use strict';
  
-angular.module('myApp').controller('DistrictController', ['$scope', '$log', '$rootScope', 'DistrictService', 'ConfirmationDialog', 
-	function($scope, $log, $rootScope, DistrictService, ConfirmationDialog) {
+angular.module('myApp').controller('DistrictController', 
+		['$scope', '$log', '$rootScope', '$mdDialog', 'CrudService', 'ComponentCityService', 'ConfirmationDialog', 'HOST', 
+	function($scope, $log, $rootScope, $mdDialog, CrudService, ComponentCityService, ConfirmationDialog, HOST) {
 	
     var self 		= this;
     self.domain		= createDomain();
@@ -22,7 +23,22 @@ angular.module('myApp').controller('DistrictController', ['$scope', '$log', '$ro
     self.remove 	= remove;
     self.reset		= reset;
     self.fetchAll 	= fetchAll;
+    self.selectCity = selectCity;
+    self.cleanCity 	= cleanCity;
     
+    function selectCity(d){
+    	$log.info(d);
+    	self.domain.districts_city = d;
+    }
+    
+    function cleanCity(){
+    	self.domain.districts_city = null;
+    }
+      
+    var REST_SERVICE_URI 	= HOST + '/district/';
+    var REST_REPOSITORY_URI = HOST + '/api/districtRepo/search/findByNameLikeIgnoreCase?name='
+    
+    CrudService.init(REST_SERVICE_URI, REST_REPOSITORY_URI);
     $scope.showConfirm = function(ev, code){
 		ConfirmationDialog.showDialog(ev, 
 			function fnYes(){
@@ -32,15 +48,18 @@ angular.module('myApp').controller('DistrictController', ['$scope', '$log', '$ro
 			function fnNo(){}
 		);
 	}
- 
+    
     fetchAll(0);
+    
+    
+   
     
     function createDomain(){
     	return {
-    		districts_code:null, 
+    		districts_id:null, 
     		districts_name:'', 
     		districts_city:{
-    			cities_code:null,
+    			cities_id:null,
     			cities_name:''
     		}
     	}
@@ -53,7 +72,7 @@ angular.module('myApp').controller('DistrictController', ['$scope', '$log', '$ro
     	var filter = encodeURI('%'+self.datatable.filter+'%');
     	
     	if (pageNumber == 0 || (pageNumber >= 0 && pageNumber < self.datatable.pages.totalPages)){
-    		DistrictService.fetchAll(pageNumber, pageSize, filter).then(
+    		CrudService.fetchAll(pageNumber, pageSize, filter).then(
 				function(d) {
 					self.datatable.data 			= d.data;
 					self.datatable.pages 			= d.page;
@@ -83,7 +102,7 @@ angular.module('myApp').controller('DistrictController', ['$scope', '$log', '$ro
     	$log.info('Creating...');
     	$log.info(domain);
     	
-        DistrictService.create(domain).then(
+        CrudService.create(domain).then(
         	function (response) {	
         		reset();
         		
@@ -102,7 +121,7 @@ angular.module('myApp').controller('DistrictController', ['$scope', '$log', '$ro
     function update(domain, code){
     	$log.info('Updating...');
     	
-        DistrictService.update(domain, code).then(
+        CrudService.update(domain, code).then(
         	function (response) {
         		reset();
         		
@@ -120,7 +139,7 @@ angular.module('myApp').controller('DistrictController', ['$scope', '$log', '$ro
  
     function removeDomain(code){
     	$log.info('Removing...');
-        DistrictService.remove(code).then(
+        CrudService.remove(code).then(
         	function (response) {
         		reset();
         		
@@ -137,12 +156,12 @@ angular.module('myApp').controller('DistrictController', ['$scope', '$log', '$ro
     }
  
     function submit() {
-        if(self.domain.districts_code===null){
+        if(self.domain.districts_id===null){
             $log.info('Saving New Domain', self.domain);
             create(self.domain);
         }else{
-            update(self.domain, self.domain.districts_code);
-            $log.info('Domain updated with code ', self.domain.districts_code);
+            update(self.domain, self.domain.districts_id);
+            $log.info('Domain updated with code ', self.domain.districts_id);
         }
     }
  
@@ -150,7 +169,7 @@ angular.module('myApp').controller('DistrictController', ['$scope', '$log', '$ro
     	$log.info('code to be edited', code);
     	
         for(var i = 0; i < self.datatable.data.length; i++){
-            if(self.datatable.data[i].cities_code === code) {
+            if(self.datatable.data[i].districts_id === code) {
                 self.domain = angular.copy(self.datatable.data[i]);
                 break;
             }
@@ -162,7 +181,7 @@ angular.module('myApp').controller('DistrictController', ['$scope', '$log', '$ro
     function remove(code){
         $log.info('code to be deleted', code);
         
-        if(self.domain.districts_code === code) {
+        if(self.domain.districts_id === code) {
             reset();
         }
         

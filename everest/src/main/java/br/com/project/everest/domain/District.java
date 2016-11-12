@@ -30,6 +30,18 @@ public class District extends CrudDomain implements Serializable {
 	@JoinColumn(name = "city_id", referencedColumnName = "city_id", foreignKey = @ForeignKey(name = "Fk_district_city"))
 	@JsonProperty("districts_city")
 	private City city;
+	
+	@JsonProperty("districts_id")
+	@Override
+	public void setId(Long id) {
+		super.setId(id);
+	}
+
+	@JsonProperty("districts_name")
+	@Override
+	public void setName(String name) {
+		super.setName(name);
+	}
 
 	public City getCity() {
 		return city;
@@ -43,5 +55,7 @@ public class District extends CrudDomain implements Serializable {
 	public String toString() {
 		return "District [city=" + city + ", getId()=" + getId() + ", getName()=" + getName() + "]";
 	}
+
+	
 
 }
