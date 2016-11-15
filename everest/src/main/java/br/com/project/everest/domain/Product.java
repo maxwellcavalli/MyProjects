@@ -18,44 +18,42 @@ import br.com.project.everest.annotation.JsonColumn;
 import br.com.project.everest.domain.base.CrudDomain;
 
 @Entity
-@Table(name = "product_sub_group")
-@AttributeOverrides({ @AttributeOverride(name = "id", column = @Column(name = "product_sub_group_id")),
+@Table(name = "product")
+@AttributeOverrides({ @AttributeOverride(name = "id", column = @Column(name = "product_id")),
 		@AttributeOverride(name = "name", column = @Column(name = "name")) })
-
-@JsonColumn(id = "product_sub_group_id", name = "product_sub_group_name")
-public class ProductSubGroup extends CrudDomain implements Serializable {
+@JsonColumn(id = "product_id", name = "product_name")
+public class Product extends CrudDomain implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "product_group_id", referencedColumnName = "product_group_id", foreignKey = @ForeignKey(name = "Fk_prod_subgrd_prod_grd"))
-	@JsonProperty("product_sub_group_group")
-	private ProductGroup productGroup;
+	@JoinColumn(name = "product_sub_group_id", referencedColumnName = "product_sub_group_id", foreignKey = @ForeignKey(name = "Fk_product_sub_grp"))
+	@JsonProperty("product_sub_group")
+	private ProductSubGroup productSubGroup;
 
 	@Override
-	@JsonProperty("product_sub_group_id")
+	@JsonProperty("product_id")
 	public void setId(Long id) {
 		super.setId(id);
 	}
 
 	@Override
-	@JsonProperty("product_sub_group_name")
+	@JsonProperty("product_name")
 	public void setName(String name) {
 		super.setName(name);
 	}
 
-	public ProductGroup getProductGroup() {
-		return productGroup;
+	public ProductSubGroup getProductSubGroup() {
+		return productSubGroup;
 	}
 
-	public void setProductGroup(ProductGroup productGroup) {
-		this.productGroup = productGroup;
+	public void setProductSubGroup(ProductSubGroup productSubGroup) {
+		this.productSubGroup = productSubGroup;
 	}
 
 	@Override
 	public String toString() {
-		return "ProductSubGroup [productGroup=" + productGroup + ", getId()=" + getId() + ", getName()=" + getName()
+		return "Product [productSubGroup=" + productSubGroup + ", getId()=" + getId() + ", getName()=" + getName()
 				+ "]";
 	}
-
 }

@@ -1,3 +1,5 @@
+<%@ taglib tagdir="/WEB-INF/tags" prefix="h"%>
+
 <%@ attribute name="title" required="true" %>
 <%@ attribute name="name" required="true" %>
 <%@ attribute name="selectEvent" required="true" %>

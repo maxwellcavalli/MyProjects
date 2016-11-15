@@ -7,9 +7,9 @@ angular.module('myApp').controller('ProductGroupController', ['$scope', '$log', 
     self.domain		= createDomain();
     self.datatable  = new Datatable();
     
-    self.datatable.header.push(new DatatableHeader('ID', '10%', 'left'));
-	self.datatable.header.push(new DatatableHeader('Name', '70%', 'left'));
-	self.datatable.header.push(new DatatableHeader('Actions', '20%', 'center'));
+    self.datatable.header.push(new DatatableHeader('ID', '5%', 'left', ''));
+	self.datatable.header.push(new DatatableHeader('Name', '80%', 'left', ''));
+	self.datatable.header.push(new DatatableHeader('Actions', '15%', 'center', 'text-align:center'));
     
     self.showError 	= false;
     self.errorMessage = ''; 

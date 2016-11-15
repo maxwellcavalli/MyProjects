@@ -1,6 +1,6 @@
 'use strict';
  
-angular.module('myApp').controller('StateController', ['$scope', '$log', '$rootScope', 'CrudService', 'ConfirmationDialog', 'HOST', 
+angular.module('myApp').controller('ProductController', ['$scope', '$log', '$rootScope', 'CrudService', 'ConfirmationDialog', 'HOST', 
 	function($scope, $log, $rootScope, CrudService, ConfirmationDialog, HOST) {
 	
     var self 		= this;
@@ -8,8 +8,9 @@ angular.module('myApp').controller('StateController', ['$scope', '$log', '$rootS
     self.datatable  = new Datatable();
     
     self.datatable.header.push(new DatatableHeader('ID', '5%', 'left', ''));
-	self.datatable.header.push(new DatatableHeader('Code', '10%', 'left', ''));
-	self.datatable.header.push(new DatatableHeader('Name', '70%', 'left', ''));
+	self.datatable.header.push(new DatatableHeader('Name', '40%', 'left', ''));
+	self.datatable.header.push(new DatatableHeader('SubGroup', '20%', 'left', ''));
+	self.datatable.header.push(new DatatableHeader('Group', '20%', 'left', ''));	
 	self.datatable.header.push(new DatatableHeader('Actions', '15%', 'center', 'text-align:center'));
     
     self.showError 	= false;
@@ -22,6 +23,18 @@ angular.module('myApp').controller('StateController', ['$scope', '$log', '$rootS
     self.reset		= reset;
     self.fetchAll 	= fetchAll;
     
+    self.selectProductSubGroup 	= selectProductSubGroup;
+    self.cleanProductSubGroup 	= cleanProductSubGroup;
+    
+    function selectProductSubGroup(d){
+    	$log.info(d);
+    	self.domain.product_sub_group = d;
+    }
+    
+    function cleanProductSubGroup(){
+    	self.domain.product_sub_group = null;
+    }
+    
     $scope.showConfirm = function(ev, code){
 		ConfirmationDialog.showDialog(ev, 
 			function fnYes(){
@@ -32,8 +45,8 @@ angular.module('myApp').controller('StateController', ['$scope', '$log', '$rootS
 		);
 	}
     
-    var REST_SERVICE_URI 	= HOST + '/state/';
-    var REST_REPOSITORY_URI = HOST + '/api/stateRepo/search/findByNameLikeIgnoreCase?name='
+    var REST_SERVICE_URI 	= HOST + '/product/';
+    var REST_REPOSITORY_URI = HOST + '/api/productRepo/search/findByNameLikeIgnoreCase?name='
     
     CrudService.init(REST_SERVICE_URI, REST_REPOSITORY_URI);
     
@@ -41,9 +54,9 @@ angular.module('myApp').controller('StateController', ['$scope', '$log', '$rootS
     
     function createDomain(){
 		return {
-			states_id : null,
-			states_abreviation : '',
-			states_name : ''
+			product_id : null,
+			product_name : '',
+			product_sub_group: null
 		};
     }
     
@@ -78,7 +91,6 @@ angular.module('myApp').controller('StateController', ['$scope', '$log', '$rootS
 				}
     		);
     	}
-    	
     }
  
     function create(domain){
@@ -136,12 +148,12 @@ angular.module('myApp').controller('StateController', ['$scope', '$log', '$rootS
     }
  
     function submit() {
-        if(self.domain.states_id===null){
+        if(self.domain.product_id===null){
             $log.info('Saving New Domain', self.domain);
             create(self.domain);
         }else{
-            update(self.domain, self.domain.states_id);
-            $log.info('Domain updated with code ', self.domain.states_id);
+            update(self.domain, self.domain.product_id);
+            $log.info('Domain updated with code ', self.domain.product_id);
         }
     }
  
@@ -149,7 +161,7 @@ angular.module('myApp').controller('StateController', ['$scope', '$log', '$rootS
     	$log.info('code to be edited', code);
     	
         for(var i = 0; i < self.datatable.data.length; i++){
-            if(self.datatable.data[i].states_id === code) {
+            if(self.datatable.data[i].product_id === code) {
                 self.domain = angular.copy(self.datatable.data[i]);
                 break;
             }
@@ -161,7 +173,7 @@ angular.module('myApp').controller('StateController', ['$scope', '$log', '$rootS
     function remove(code){
         $log.info('code to be deleted', code);
         
-        if(self.domain.states_id === code) {
+        if(self.domain.product_id === code) {
             reset();
         }
         

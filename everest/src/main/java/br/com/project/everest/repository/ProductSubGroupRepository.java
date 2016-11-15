@@ -23,4 +23,20 @@ public interface ProductSubGroupRepository extends CrudRepository<ProductSubGrou
 					+ "      where upper(productSubGroup.name) like upper(:name) ")
 	Page<ProductSubGroup> findByNameLikeIgnoreCase(@Param("name") String name, Pageable pageable);
 	
+	
+	@Query(value = "select productSubGroup "
+			+ "       from ProductSubGroup productSubGroup "
+			+ "      inner join fetch productSubGroup.productGroup productGroup "
+			+ "      where upper(productSubGroup.name) like upper(:name) "
+			+ "        and upper(productGroup.name) like upper(:group) "
+			+ "      order by productGroup.name, productSubGroup.name ",
+			countQuery="select count(productSubGroup) "
+					+ "       from ProductSubGroup productSubGroup "
+					+ "      inner join productSubGroup.productGroup productGroup "
+					+ "      where upper(productSubGroup.name) like upper(:name) "
+					+ "        and upper(productGroup.name) like upper(:group) ")
+	Page<ProductSubGroup> findByNameAndGroupLikeIgnoreCase(@Param("name") String name, 
+			@Param("group") String group, Pageable pageable);
+	
+	
 }

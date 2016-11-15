@@ -10,8 +10,8 @@
 		<script type="text/javascript" src="js/service/crud_service.js"></script>
 		<script type="text/javascript" src="js/controller/customer_controller.js"></script>
 		
-		<script type="text/javascript" src="js/service/component_district_service.js"></script>
-		<script type="text/javascript" src="js/controller/component_district_controller.js"></script>
+		<script type="text/javascript" src="js/service/component/component_district_service.js"></script>
+		<script type="text/javascript" src="js/controller/component/component_district_controller.js"></script>
 	</jsp:attribute>
 
 	<jsp:body>
@@ -118,7 +118,7 @@
 					<table class="col-sm-12 table-bordered table-striped table-condensed cf" style="padding-right: 0px; padding-left: 0px; ">
 						<thead class="cf">
 							<tr>
-								<th ng-repeat="d in ctrl.datatable.header" width="{{d.width}}" align="{{d.align}}">{{d.title}}</th>
+								<th ng-repeat="d in ctrl.datatable.header" width="{{d.width}}" align="{{d.align}}" style="{{d.style}}">{{d.title}}</th>
 							</tr>
 						</thead>
 						

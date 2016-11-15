@@ -46,7 +46,7 @@
 					<table class="col-sm-12 table-bordered table-striped table-condensed cf" style="padding-right: 0px; padding-left: 0px; ">
 						<thead class="cf">
 							<tr>
-								<th ng-repeat="d in ctrl.datatable.header" width="{{d.width}}" align="{{d.align}}">{{d.title}}</th>
+								<th ng-repeat="d in ctrl.datatable.header" width="{{d.width}}" align="{{d.align}}" style="{{d.style}}">{{d.title}}</th>
 							</tr>
 						</thead>
 						

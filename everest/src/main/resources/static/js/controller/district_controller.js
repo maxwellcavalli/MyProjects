@@ -8,11 +8,11 @@ angular.module('myApp').controller('DistrictController',
     self.domain		= createDomain();
     self.datatable  = new Datatable();
     
-    self.datatable.header.push(new DatatableHeader('ID', '10%', 'left'));
-	self.datatable.header.push(new DatatableHeader('Name', '25%', 'left'));
-	self.datatable.header.push(new DatatableHeader('City', '25%', 'left'));
-	self.datatable.header.push(new DatatableHeader('State', '20%', 'left'));
-	self.datatable.header.push(new DatatableHeader('Actions', '20%', 'center'));
+    self.datatable.header.push(new DatatableHeader('ID', '5%', 'left', ''));
+	self.datatable.header.push(new DatatableHeader('Name', '30%', 'left', ''));
+	self.datatable.header.push(new DatatableHeader('City', '30%', 'left', ''));
+	self.datatable.header.push(new DatatableHeader('State', '20%', 'left', ''));
+	self.datatable.header.push(new DatatableHeader('Actions', '15%', 'center', 'text-align:center'));
     
     self.showError 	= false;
     self.errorMessage = '';
