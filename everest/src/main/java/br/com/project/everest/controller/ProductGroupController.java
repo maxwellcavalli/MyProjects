@@ -6,36 +6,35 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
 import br.com.project.everest.controller.base.CrudController;
-import br.com.project.everest.domain.City;
-import br.com.project.everest.repository.CityRepository;
+import br.com.project.everest.domain.ProductGroup;
+import br.com.project.everest.repository.ProductGroupRepository;
 import br.com.project.everest.repository.base.CrudRepository;
 
 @RestController
-@RequestMapping(value = { "/city" })
-public class CityController extends CrudController<City>{
+@RequestMapping(value = { "/productGroup" })
+public class ProductGroupController extends CrudController<ProductGroup> {
 
 	@Autowired
-	CityRepository cityRepository; 
-	
+	ProductGroupRepository productGroupRepository;
+
 	@Override
 	public ModelAndView getView() {
 		ModelAndView model = new ModelAndView();
-		model.addObject("title", "City");
-		model.setViewName("city");
+		model.addObject("title", "Product Group");
+		model.setViewName("productGroup");
 		return model;
 	}
 
 	@Override
-	public CrudRepository<City> getRepository() {
-		return cityRepository;
+	public CrudRepository<ProductGroup> getRepository() {
+		return productGroupRepository;
 	}
 
 	@Override
-	public void beforeSave(City t) {
+	public void beforeSave(ProductGroup t) {
 	}
 
 	@Override
-	public void validationCreate(City t) throws Exception {
+	public void validationCreate(ProductGroup t) throws Exception {
 	}
-
 }

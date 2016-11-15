@@ -87,6 +87,23 @@ public class ReflectionUtil {
 	public static String objectToJson(Object parent) throws IllegalArgumentException, IllegalAccessException {
 		StringBuilder builder = new StringBuilder();
 		builder.append("{");
+		
+		Field[] fields = parent.getClass().getDeclaredFields();
+		List<Field> lField = new ArrayList<>();
+		for (int x = 0; x < fields.length; x++) {
+			Field field = fields[x];
+			String fieldName = field.getName();
+
+			if (field.isAnnotationPresent(JsonIgnore.class)) {
+				continue;
+			}
+
+			if (fieldName.equals("serialVersionUID")) {
+				continue;
+			}
+
+			lField.add(field);
+		}
 
 		if (parent != null && Hibernate.isInitialized(parent)) {
 			if (parent.getClass().isAnnotationPresent(JsonColumn.class)) {
@@ -110,26 +127,11 @@ public class ReflectionUtil {
 					builder.append("\"");
 					builder.append(baseDomain.getName());
 					builder.append("\"");
-					builder.append(",");
-
+					
+					if (lField.size() > 0){
+						builder.append(",");
+					}
 				}
-			}
-
-			Field[] fields = parent.getClass().getDeclaredFields();
-			List<Field> lField = new ArrayList<>();
-			for (int x = 0; x < fields.length; x++) {
-				Field field = fields[x];
-				String fieldName = field.getName();
-
-				if (field.isAnnotationPresent(JsonIgnore.class)) {
-					continue;
-				}
-
-				if (fieldName.equals("serialVersionUID")) {
-					continue;
-				}
-
-				lField.add(field);
 			}
 
 			for (int x = 0; x < lField.size(); x++) {
