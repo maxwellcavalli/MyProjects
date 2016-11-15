@@ -25,4 +25,22 @@ public interface DistrictRepository extends CrudRepository<District>{
 					+ "  where upper(district.name) like upper(:name) ")
 	Page<District> findByNameLikeIgnoreCase(@Param("name") String name, Pageable pageable);
 	
+	
+	@Query(value = "select district "
+			+ "       from District district "
+			+ "      inner join fetch district.city city "
+			+ "      inner join fetch city.state state"
+			+ "      where upper(district.name) like upper(:name) "
+			+ "        and upper(city.name) like (:city) "
+			+ "      order by district.name, city.name ",
+			countQuery="select count(district) "
+					+ "   from District district "
+					+ "  inner join district.city city "
+					+ "  inner join city.state state" 
+					+ "  where upper(district.name) like upper(:name) "
+					+ "    and upper(city.name) like (:city) ")
+	Page<District> findByNameAndCityLikeIgnoreCase(@Param("name") String name, @Param("city") String city, Pageable pageable);
+	
+	
+	
 }

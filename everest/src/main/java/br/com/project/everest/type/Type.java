@@ -7,6 +7,10 @@ public enum Type {
 	LONG,
 	DATE,
 	STRING,
+	SET,
+	LIST, 
+	COLLECTION,
+	ENUMERATION,
 	UNKNOWN;
 	
 }

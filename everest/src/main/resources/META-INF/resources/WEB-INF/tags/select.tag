@@ -34,7 +34,7 @@
 			<c:otherwise>
 				<select name="${name}" id="${name}" 
 			      		ng-options="${ngOptions}"
-			      		ng-model="${model}" required
+			      		ng-model="${model}" 
 			      		${disabled}
 			      		class="form-control input-sm">
 			      		

@@ -1,6 +1,6 @@
 'use strict';
  
-angular.module('myApp').controller('DistrictController', 
+angular.module('myApp').controller('CustomerController', 
 		['$scope', '$log', '$rootScope', '$mdDialog', 'CrudService', 'ConfirmationDialog', 'HOST', 
 	function($scope, $log, $rootScope, $mdDialog, CrudService, ConfirmationDialog, HOST) {
 	
@@ -9,36 +9,108 @@ angular.module('myApp').controller('DistrictController',
     self.datatable  = new Datatable();
     
     self.datatable.header.push(new DatatableHeader('ID', '10%', 'left'));
-	self.datatable.header.push(new DatatableHeader('Name', '25%', 'left'));
-	self.datatable.header.push(new DatatableHeader('City', '25%', 'left'));
-	self.datatable.header.push(new DatatableHeader('State', '20%', 'left'));
+	self.datatable.header.push(new DatatableHeader('Name', '70%', 'left'));
 	self.datatable.header.push(new DatatableHeader('Actions', '20%', 'center'));
     
-    self.showError 	= false;
-    self.errorMessage = '';
+    self.showError 		= false;
+    self.errorMessage 	= '';
     
     //public methods
-    self.submit 	= submit;
-    self.edit 		= edit;
-    self.remove 	= remove;
-    self.reset		= reset;
-    self.fetchAll 	= fetchAll;
-    self.selectCity = selectCity;
-    self.cleanCity 	= cleanCity;
+    self.submit 		= submit;
+    self.edit 			= edit;
+    self.remove 		= remove;
+    self.reset			= reset;
+    self.fetchAll 		= fetchAll;
+    self.selectDistrict = selectDistrict;
+    self.cleanDistrict 	= cleanDistrict;
     
-    function selectCity(d){
-    	$log.info(d);
-    	self.domain.districts_city = d;
+    self.addContact		= addContact;
+    self.resetContact 	= resetContact;
+    self.editContact 	= editContact;
+    self.removeContact 	= removeContact;
+    
+    self.contactType = ['TELEPHONE', 'CELLPHONE', 'FAX', 'EMAIL'];   
+    
+    self.customer_contacts = createContact(); 
+    
+    function removeContact(d){
+    	var x = 0;
+    	var index = -1;
+    	for (x in self.domain.customer_contacts){
+    		if (self.domain.customer_contacts[x].internal_id == d.internal_id){
+    			index = x;
+    			break;
+    		}
+    	}  
+    	
+    	if (index > -1){
+    		self.domain.customer_contacts.splice(index, 1);
+    	}
+    	
+    	$log.info(self.domain.customer_contacts);
     }
     
-    function cleanCity(){
-    	self.domain.districts_city = null;
+    function createContact(){
+    	return {
+    		customer_contact_id : null,
+    		customer_contact_name: '',
+    		customer_contact_type:null,
+    		inserted: false,
+    		internal_id: null
+    	}
+    }
+    
+    function editContact(d){
+    	self.customer_contacts = angular.copy(d);
+    }
+    
+    function addContact(){
+    	$log.info(self.customer_contacts.inserted);
+    	
+    	if (self.customer_contacts.inserted){
+    		var x = 0;
+    		var index = -1;
+    		for (x in self.domain.customer_contacts){
+    			if (self.domain.customer_contacts[x].internal_id == self.customer_contacts.internal_id){
+    				index = x;
+    				break;
+    			}
+    		}
+    		
+    		if (index > -1){
+    			self.domain.customer_contacts[index] = self.customer_contacts;
+    		}
+    		
+    	} else {
+    		self.customer_contacts.inserted = true;
+    		self.customer_contacts.internal_id = self.domain.customer_contacts.length + 1;
+    		
+    		self.domain.customer_contacts.push(self.customer_contacts);
+    	}
+    	
+    	$log.info(self.domain.customer_contacts);
+    	resetContact();
+    }
+    
+    function resetContact(){
+    	self.customer_contacts = createContact();
+    	$('#customerType').focus();
+    }
+    
+    function selectDistrict(d){
+    	$log.info(d);
+    	self.domain.customer_district = d;
+    }
+    
+    function cleanDistrict(){
+    	self.domain.customer_district = null;
     }
       
-    var REST_SERVICE_URI 	= HOST + '/district/';
-    var REST_REPOSITORY_URI = HOST + '/api/districtRepo/search/findByNameLikeIgnoreCase?name='
+    var REST_SERVICE_URI 	= HOST + '/customer/';
+    var REST_REPOSITORY_URI = HOST + '/api/customerRepo/search/findByNameLikeIgnoreCase?name='
     
     CrudService.init(REST_SERVICE_URI, REST_REPOSITORY_URI);
+    
     $scope.showConfirm = function(ev, code){
 		ConfirmationDialog.showDialog(ev, 
 			function fnYes(){
@@ -51,17 +123,15 @@ angular.module('myApp').controller('DistrictController',
     
     fetchAll(0);
     
-    
-   
-    
     function createDomain(){
     	return {
-    		districts_id:null, 
-    		districts_name:'', 
-    		districts_city:{
-    			cities_id:null,
-    			cities_name:''
-    		}
+    		customer_id:null, 
+    		customer_name:'', 
+    		customer_district:{
+    			customer_id:null,
+    			districts_name:''
+    		}, 
+    		customer_contacts:[]
     	}
     }
     
@@ -156,12 +226,12 @@ angular.module('myApp').controller('DistrictController',
     }
  
     function submit() {
-        if(self.domain.districts_id===null){
+        if(self.domain.customer_id===null){
             $log.info('Saving New Domain', self.domain);
             create(self.domain);
         }else{
-            update(self.domain, self.domain.districts_id);
-            $log.info('Domain updated with code ', self.domain.districts_id);
+            update(self.domain, self.domain.customer_id);
+            $log.info('Domain updated with code ', self.domain.customer_id);
         }
     }
  
@@ -169,11 +239,19 @@ angular.module('myApp').controller('DistrictController',
     	$log.info('code to be edited', code);
     	
         for(var i = 0; i < self.datatable.data.length; i++){
-            if(self.datatable.data[i].districts_id === code) {
+            if(self.datatable.data[i].customer_id === code) {
                 self.domain = angular.copy(self.datatable.data[i]);
                 break;
             }
         }
+        
+        $log.info(self.domain);
+        
+        var x = 0;
+		for (x in self.domain.customer_contacts){
+			self.domain.customer_contacts[x].internal_id = x;
+			self.domain.customer_contacts[x].inserted = true;
+		}
         
         focusOnFirstField(angular.element('form'));
     }
@@ -181,7 +259,7 @@ angular.module('myApp').controller('DistrictController',
     function remove(code){
         $log.info('code to be deleted', code);
         
-        if(self.domain.districts_id === code) {
+        if(self.domain.customer_id === code) {
             reset();
         }
         

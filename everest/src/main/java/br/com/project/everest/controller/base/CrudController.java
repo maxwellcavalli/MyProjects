@@ -1,6 +1,6 @@
 package br.com.project.everest.controller.base;
 
-import org.apache.commons.beanutils.BeanUtils;
+import org.apache.commons.lang.exception.ExceptionUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -58,7 +58,8 @@ public abstract class CrudController<T extends CrudDomain>  {
 			domain = getRepository().save(domain);
 			return new ResponseEntity<ResponseHelper<T>>(new ResponseHelper<T>(domain), HttpStatus.CREATED);
 		} catch (Exception e) {
-			return new ResponseEntity<ResponseHelper<T>>(new ResponseHelper<T>(e.getMessage()),
+			String message = ExceptionUtils.getRootCauseMessage(e);
+			return new ResponseEntity<ResponseHelper<T>>(new ResponseHelper<T>(message),
 					HttpStatus.EXPECTATION_FAILED);
 		}
 	}
@@ -77,14 +78,15 @@ public abstract class CrudController<T extends CrudDomain>  {
 			}
 
 			beforeSave(domain);
-			BeanUtils.copyProperties(currentDomain, domain);
-			currentDomain.setId(id);
+			domain.setId(id);
 			
-			currentDomain = getRepository().save(currentDomain);
+			domain = getRepository().save(domain);
 
-			return new ResponseEntity<ResponseHelper<T>>(new ResponseHelper<T>(currentDomain), HttpStatus.OK);
+			return new ResponseEntity<ResponseHelper<T>>(new ResponseHelper<T>(domain), HttpStatus.OK);
 		} catch (Exception e) {
-			return new ResponseEntity<ResponseHelper<T>>(new ResponseHelper<T>(e.getMessage()),
+			String message = ExceptionUtils.getRootCauseMessage(e);
+			
+			return new ResponseEntity<ResponseHelper<T>>(new ResponseHelper<T>(message),
 					HttpStatus.EXPECTATION_FAILED);
 		}
 	}
@@ -104,7 +106,8 @@ public abstract class CrudController<T extends CrudDomain>  {
 			getRepository().delete(id);
 			return new ResponseEntity<ResponseHelper<T>>(HttpStatus.NO_CONTENT);
 		} catch (Exception e) {
-			return new ResponseEntity<ResponseHelper<T>>(new ResponseHelper<T>(e.getMessage()),
+			String message = ExceptionUtils.getRootCauseMessage(e);
+			return new ResponseEntity<ResponseHelper<T>>(new ResponseHelper<T>(message),
 					HttpStatus.EXPECTATION_FAILED);
 		}
 	}

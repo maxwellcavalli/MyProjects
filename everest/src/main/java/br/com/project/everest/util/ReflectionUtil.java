@@ -4,10 +4,15 @@ import java.lang.reflect.Field;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
+import java.util.List;
+import java.util.Set;
 
 import org.hibernate.Hibernate;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import br.com.project.everest.annotation.JsonColumn;
@@ -27,6 +32,14 @@ public class ReflectionUtil {
 			return Type.BIGDECIMAL;
 		} else if (field.getType().equals(Date.class)) {
 			return Type.DATE;
+		} else if (field.getType().equals(Set.class)) {
+			return Type.SET;
+		} else if (field.getType().equals(List.class)) {
+			return Type.LIST;
+		} else if (field.getType().equals(Collection.class)) {
+			return Type.COLLECTION;
+		} else if (field.getType().isEnum()) {
+			return Type.ENUMERATION;
 		} else {
 			return Type.UNKNOWN;
 		}
@@ -81,15 +94,15 @@ public class ReflectionUtil {
 					CrudDomain baseDomain = (CrudDomain) parent;
 					JsonColumn jsonIdColumn = parent.getClass().getAnnotation(JsonColumn.class);
 
-					/*id*/
+					/* id */
 					builder.append("\"");
 					builder.append(jsonIdColumn.id());
 					builder.append("\"");
 					builder.append(":");
 					builder.append(baseDomain.getId());
 					builder.append(",");
-					
-					/*name*/
+
+					/* name */
 					builder.append("\"");
 					builder.append(jsonIdColumn.name());
 					builder.append("\"");
@@ -98,19 +111,42 @@ public class ReflectionUtil {
 					builder.append(baseDomain.getName());
 					builder.append("\"");
 					builder.append(",");
-					
+
 				}
 			}
 
 			Field[] fields = parent.getClass().getDeclaredFields();
-
+			List<Field> lField = new ArrayList<>();
 			for (int x = 0; x < fields.length; x++) {
 				Field field = fields[x];
-				field.setAccessible(true);
-
 				String fieldName = field.getName();
 
+				if (field.isAnnotationPresent(JsonIgnore.class)) {
+					continue;
+				}
+
 				if (fieldName.equals("serialVersionUID")) {
+					continue;
+				}
+
+				lField.add(field);
+			}
+
+			for (int x = 0; x < lField.size(); x++) {
+				Field field = lField.get(x);
+				String fieldName = field.getName();
+
+				if (field.isAnnotationPresent(JsonIgnore.class)) {
+					continue;
+				}
+
+				if (fieldName.equals("serialVersionUID")) {
+					continue;
+				}
+
+				field.setAccessible(true);
+				Object object = field.get(parent);
+				if (!Hibernate.isPropertyInitialized(object, fieldName)) {
 					continue;
 				}
 
@@ -125,16 +161,62 @@ public class ReflectionUtil {
 				builder.append(":");
 
 				Type type = ReflectionUtil.getType(field);
-				Object object = field.get(parent);
 
 				if (!type.equals(Type.UNKNOWN)) {
-					String sValue = ReflectionUtil.getFieldValue(object, type);
-					builder.append(sValue);
+					if (type.equals(Type.SET)) {
+						builder.append("[");
+						Set<?> set = (Set<?>) object;
+						int c = 0;
+						for (Object obj : set) {
+							builder.append(objectToJson(obj));
+							
+							if (c + 1 < set.size()){
+								builder.append(",");
+							}
+							c++;
+						}
+						builder.append("]");
+					} else if (type.equals(Type.COLLECTION)) {
+						builder.append("[");
+						Collection<?> collection = (Collection<?>) object;
+						int c = 0;
+						for (Object obj : collection) {
+							builder.append(objectToJson(obj));
+							
+							if (c + 1 < collection.size()){
+								builder.append(",");
+							}
+							c++;
+						}
+						builder.append("]");
+					} else if (type.equals(Type.LIST)) {
+						builder.append("[");
+						List<?> list = (List<?>) object;
+						int c = 0;
+						for (Object obj : list) {
+							builder.append(objectToJson(obj));
+							
+							if (c + 1 < list.size()){
+								builder.append(",");
+							}
+							c++;
+						}
+						builder.append("]");
+					} else if (type.equals(Type.ENUMERATION)) {
+						Enum<?> enaum = (Enum<?>) object;
+						builder.append("\"");
+						builder.append(enaum.name());
+						builder.append("\"");
+						
+					} else {
+						String sValue = ReflectionUtil.getFieldValue(object, type);
+						builder.append(sValue);
+					}
 				} else {
 					builder.append(objectToJson(object));
 				}
 
-				if (x + 1 < fields.length) {
+				if (x + 1 < lField.size()) {
 					builder.append(",");
 				}
 			}

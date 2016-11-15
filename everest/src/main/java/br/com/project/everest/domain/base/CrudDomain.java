@@ -7,15 +7,10 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
-import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 
-import com.fasterxml.jackson.annotation.JsonValue;
-
-import br.com.project.everest.util.ReflectionUtil;
-
 @MappedSuperclass
-public class CrudDomain implements Serializable {
+public class CrudDomain extends CrudDomainUtil implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
@@ -28,15 +23,7 @@ public class CrudDomain implements Serializable {
 	@Column(name = "name")
 	private String name;
 	
-	@JsonValue
-	@Transient
-	public String getJsonValue() {
-		try {
-			return ReflectionUtil.objectToJson(this);
-		} catch (Exception e) {
-			return "";
-		}
-	}
+	
 
 	public Long getId() {
 		return id;
