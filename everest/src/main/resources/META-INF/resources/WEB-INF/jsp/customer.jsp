@@ -53,35 +53,37 @@
 			        					</div>
 			        					
 			        					<div class="row">
-			        						<div id="no-more-tables">
-			
-												<table class="col-sm-12 table-bordered table-striped table-condensed cf" style="padding-right: 0px; padding-left: 0px; ">
-													<thead class="cf">
-														<tr>
-															<th width="30%" align="left">Type</th>
-															<th width="60%" align="left">Description</th>
-															<th width="10%" align="center">Actions</th>
-														</tr>
-													</thead>
-													
-													<tbody>
-														<tr ng-show="ctrl.domain.customer_contacts.length == 0"> 
-															<td colspan="3">
-																<span>No Records Found</span>
-															</td>
-														</tr>
-													
-														<tr ng-repeat="d in ctrl.domain.customer_contacts">
-															<td data-title="Type"><span ng-bind="d.customer_contact_type"></span></td>
-															<td data-title="Description"><span ng-bind="d.customer_contact_name"></span></td>
-															
-															<td data-title="Actions" align="center">
-																<button type="button" ng-click="ctrl.editContact(d)" class="btn btn-success glyphicon glyphicon-pencil" title="Edit"></button>  
-								                             	<button type="button" ng-click="ctrl.removeContact(d)" class="btn btn-danger glyphicon glyphicon-trash" title="Remove"></button>
-															</td>
-														</tr>
-													</tbody>
-												</table>
+			        						 <div class="col-md-12">
+				        						<div id="no-more-tables">
+				
+													<table class="col-sm-12 table-bordered table-striped table-condensed cf" style="padding-right: 0px; padding-left: 0px; ">
+														<thead class="cf">
+															<tr>
+																<th width="30%" align="left">Type</th>
+																<th width="60%" align="left">Description</th>
+																<th width="10%" align="center">Actions</th>
+															</tr>
+														</thead>
+														
+														<tbody>
+															<tr ng-show="ctrl.domain.customer_contacts.length == 0"> 
+																<td colspan="3">
+																	<span>No Records Found</span>
+																</td>
+															</tr>
+														
+															<tr ng-repeat="d in ctrl.domain.customer_contacts">
+																<td data-title="Type"><span ng-bind="d.customer_contact_type"></span></td>
+																<td data-title="Description"><span ng-bind="d.customer_contact_name"></span></td>
+																
+																<td data-title="Actions" align="center">
+																	<button type="button" ng-click="ctrl.editContact(d)" class="btn btn-success glyphicon glyphicon-pencil" title="Edit"></button>  
+									                             	<button type="button" ng-click="ctrl.removeContact(d)" class="btn btn-danger glyphicon glyphicon-trash" title="Remove"></button>
+																</td>
+															</tr>
+														</tbody>
+													</table>
+												</div>
 											</div>
 			        					</div>
 			        					

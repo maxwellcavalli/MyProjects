@@ -65,31 +65,44 @@ angular.module('myApp').controller('CustomerController',
     }
     
     function addContact(){
-    	$log.info(self.customer_contacts.inserted);
+    	self.showError 		= false;
+    	self.errorMessage 	= '';
     	
-    	if (self.customer_contacts.inserted){
-    		var x = 0;
-    		var index = -1;
-    		for (x in self.domain.customer_contacts){
-    			if (self.domain.customer_contacts[x].internal_id == self.customer_contacts.internal_id){
-    				index = x;
-    				break;
-    			}
-    		}
-    		
-    		if (index > -1){
-    			self.domain.customer_contacts[index] = self.customer_contacts;
-    		}
-    		
-    	} else {
-    		self.customer_contacts.inserted = true;
-    		self.customer_contacts.internal_id = self.domain.customer_contacts.length + 1;
-    		
-    		self.domain.customer_contacts.push(self.customer_contacts);
+    	if (self.customer_contacts.customer_contact_type == null){
+    		 self.errorMessage 	= 'Contacts - Type Invalid <br />';
+    		 self.showError = true;
     	}
     	
-    	$log.info(self.domain.customer_contacts);
-    	resetContact();
+    	if (self.customer_contacts.customer_contact_name == null || self.customer_contacts.customer_contact_name == ''){
+    		self.errorMessage 	= self.errorMessage + 'Contacts - Description Invalid <br>';
+    		self.showError = true;
+    	}
+    	
+    	if (!self.showError){
+	    	if (self.customer_contacts.inserted){
+	    		var x = 0;
+	    		var index = -1;
+	    		for (x in self.domain.customer_contacts){
+	    			if (self.domain.customer_contacts[x].internal_id == self.customer_contacts.internal_id){
+	    				index = x;
+	    				break;
+	    			}
+	    		}
+	    		
+	    		if (index > -1){
+	    			self.domain.customer_contacts[index] = self.customer_contacts;
+	    		}
+	    		
+	    	} else {
+	    		self.customer_contacts.inserted = true;
+	    		self.customer_contacts.internal_id = self.domain.customer_contacts.length + 1;
+	    		
+	    		self.domain.customer_contacts.push(self.customer_contacts);
+	    	}
+	    	
+	    	$log.info(self.domain.customer_contacts);
+	    	resetContact();
+    	}
     }
     
     function resetContact(){
