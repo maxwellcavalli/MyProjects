@@ -22,8 +22,13 @@
 		
 			<form ng-submit="ctrl.submit()" name="formulario" class="form-horizontal" form-focus="true">
 			
+				<div class="row">
+					<h:input model="ctrl.domain.product_code" label="Code" name="code" form="formulario" maxlength="32" required="false" styleClass="col-md-2"/>
+					<h:input model="ctrl.domain.product_name" label="Name" name="name" form="formulario" maxlength="50" required="true" styleClass="col-md-8"/>
+				</div>
+			
 				 <div class="row">
-					<h:input model="ctrl.domain.product_name" label="Name" name="name" form="formulario" maxlength="50" required="true" styleClass="col-md-10"/>
+					
 				</div>
 				
 				<div class="row">
@@ -60,13 +65,14 @@
 						
 						<tbody>
 							<tr ng-show="ctrl.datatable.data.length == 0"> 
-								<td colspan="5">
+								<td colspan="6">
 									<span>No Records Found</span>
 								</td>
 							</tr>
 						
 							<tr ng-repeat="d in ctrl.datatable.data">
 								<td data-title="ID"><span ng-bind="d.product_id"></span></td>
+								<td data-title="Code"><span ng-bind="d.product_code"></span></td>
 								<td data-title="Name"><span ng-bind="d.product_name"></span></td>
 								<td data-title="SubGroup"><span ng-bind="d.product_sub_group.product_sub_group_name"></span></td>
 								<td data-title="Group"><span ng-bind="d.product_sub_group.product_sub_group_group.product_group_name"></span></td>

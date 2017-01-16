@@ -40,6 +40,11 @@ public class ProductController extends CrudController<Product> {
 				|| t.getProductSubGroup().getId().longValue() == 0) {
 			throw new Exception("Invalid Product Sub Group");
 		}
+		
+		
+		
+		
+		
 	}
 
 }

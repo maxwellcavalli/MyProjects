@@ -26,6 +26,11 @@ public class Product extends CrudDomain implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
+	@Column(name="code", length=32, nullable=true)
+	@JsonProperty("product_code")
+	private String code;
+	
+	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "product_sub_group_id", referencedColumnName = "product_sub_group_id", foreignKey = @ForeignKey(name = "Fk_product_sub_grp"))
 	@JsonProperty("product_sub_group")
@@ -51,9 +56,17 @@ public class Product extends CrudDomain implements Serializable {
 		this.productSubGroup = productSubGroup;
 	}
 
+	public String getCode() {
+		return code;
+	}
+
+	public void setCode(String code) {
+		this.code = code;
+	}
+
 	@Override
 	public String toString() {
-		return "Product [productSubGroup=" + productSubGroup + ", getId()=" + getId() + ", getName()=" + getName()
-				+ "]";
+		return "Product [code=" + code + ", productSubGroup=" + productSubGroup + ", getId()=" + getId()
+				+ ", getName()=" + getName() + "]";
 	}
 }

@@ -8,7 +8,8 @@ angular.module('myApp').controller('ProductController', ['$scope', '$log', '$roo
     self.datatable  = new Datatable();
     
     self.datatable.header.push(new DatatableHeader('ID', '5%', 'left', ''));
-	self.datatable.header.push(new DatatableHeader('Name', '40%', 'left', ''));
+    self.datatable.header.push(new DatatableHeader('Code', '10%', 'left', ''));
+	self.datatable.header.push(new DatatableHeader('Name', '30%', 'left', ''));
 	self.datatable.header.push(new DatatableHeader('SubGroup', '20%', 'left', ''));
 	self.datatable.header.push(new DatatableHeader('Group', '20%', 'left', ''));	
 	self.datatable.header.push(new DatatableHeader('Actions', '15%', 'center', 'text-align:center'));
@@ -55,6 +56,7 @@ angular.module('myApp').controller('ProductController', ['$scope', '$log', '$roo
     function createDomain(){
 		return {
 			product_id : null,
+			product_code : '',
 			product_name : '',
 			product_sub_group: null
 		};
