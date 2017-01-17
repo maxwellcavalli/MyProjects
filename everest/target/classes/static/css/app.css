@@ -76,8 +76,20 @@ td, th {
 	margin-right: 10px;
 }
 
+@media only screen and (min-width: 800px) {
+	.padding-top-20 {
+		padding-top: 20px;
+	
+	}
+}
+
 /* data table */
 @media only screen and (max-width: 800px) {
+	.padding-top-20 {
+		padding-top: 0px;
+	
+	}
+	
 	/* Force table to not be like tables anymore */
 	#no-more-tables table, #no-more-tables thead, #no-more-tables tbody,
 		#no-more-tables th, #no-more-tables td, #no-more-tables tr {

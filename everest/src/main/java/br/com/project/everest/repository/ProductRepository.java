@@ -25,7 +25,7 @@ public interface ProductRepository extends CrudRepository<Product>{
 					+ "      where upper(product.name) like upper(:name) ")
 	Page<Product> findByNameLikeIgnoreCase(@Param("name") String name, Pageable pageable);
 
-	Product findByCodeAndNotId
+	//Product findByCodeAndNotId
 	
 	
 	

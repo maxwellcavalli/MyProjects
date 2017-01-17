@@ -130,11 +130,12 @@ function Datatable(){
 	}
 }
 
-function DatatableHeader(pTitle, pWidth, pAlign){
+function DatatableHeader(pTitle, pWidth, pAlign, pStyle){
 	return header = {
 			title: pTitle,
 			width: pWidth,
-			align: pAlign
+			align: pAlign,
+			style: pStyle
 	}
 }
 
